@@ -1,14 +1,19 @@
 import java.util.Scanner;
 
 public class quanLySinhVien {
+    static String[] maSinhVien;
+    static String[] hoTen;
+    static String[] ngaySinh;
+    static String[] diemThi;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Nhập số sinh viên : ");
         int soSinhVien = sc.nextInt();
-        String[] maSinhVien = new String[soSinhVien];
-        String[] hoTen = new String[soSinhVien];
-        String[] ngaySinh = new String[soSinhVien];
-        String[] diemThi = new String[soSinhVien];
+        maSinhVien = new String[soSinhVien];
+        hoTen = new String[soSinhVien];
+        ngaySinh = new String[soSinhVien];
+        diemThi = new String[soSinhVien];
         for (int i = 0; i < hoTen.length; i++) {
             Scanner sc1 = new Scanner(System.in);
             System.out.print("Nhập tên sinh viên thứ " + (i + 1) + " : ");
@@ -20,20 +25,40 @@ public class quanLySinhVien {
             System.out.print("Nhập điểm thi sinh viên thứ " + (i + 1) + " : ");
             diemThi[i] = sc1.nextLine();
         }
-//        1. Hiển thị danh sách sinh viên:
-        hienThiDanhSachSinhVien(hoTen, maSinhVien, ngaySinh, diemThi);
-//        2. Thêm sinh viên :
-        themMotSinhVienMoi(hoTen, maSinhVien, ngaySinh, diemThi);
-////      3. Đổi thông tin :
-        chinhSuaThongTin(hoTen, maSinhVien, ngaySinh, diemThi);
-        hienThiDanhSachSinhVien(hoTen, maSinhVien, ngaySinh, diemThi);
-//        4. Xóa một sinh viên :
-        xoaMotSinhVien(hoTen, maSinhVien, ngaySinh, diemThi);
-//            5. Tìm sinh viên điểm cao nhất
-//        timSinhVienCoDiemCaoNhat(hoTen,maSinhVien,ngaySinh,diemThi);
+        int luaChon;
+        do {
+            System.out.println("Nhập lựa chọn của bạn : ");
+            System.out.println("1. Thêm một sinh viên");
+            System.out.println("2. Đổi thông tin ");
+            System.out.println("3. Xóa một sinh viên ");
+            System.out.println("4. Tìm sinh viên điểm cao nhất");
+            System.out.println("0. Thoát chương trình");
+            luaChon = sc.nextInt();
+            hienThiDanhSachSinhVien();
+            switch (luaChon) {
+                case 1: {
+                    themMotSinhVienMoi();
+                    break;
+                }
+                case 2: {
+                    chinhSuaThongTin();
+                    hienThiDanhSachSinhVien();
+                    break;
+                }
+                case 3: {
+                    xoaMotSinhVien();
+                    break;
+                }
+                case 4: {
+                    timSinhVienCoDiemCaoNhat();
+                    break;
+                }
+            }
+        }while(luaChon!=0);
+
     }
 
-    static void hienThiDanhSachSinhVien(String hoTen[], String maSinhVien[], String ngaySinh[], String diemThi[]) {
+    static void hienThiDanhSachSinhVien() {
         System.out.println("Danh sách sinh viên : ");
         System.out.printf("%23s%23s%23s%23s\n", "Họ tên", "Mã sinh viên", "Ngày sinh", "Điểm thi");
         for (int i = 0; i < hoTen.length; i++) {
@@ -41,7 +66,7 @@ public class quanLySinhVien {
         }
     }
 
-    static void themMotSinhVienMoi(String hoTen[], String maSinhVien[], String ngaySinh[], String diemThi[]) {
+    static void themMotSinhVienMoi() {
         String[] themTen = new String[hoTen.length + 1];
         String[] themMaSinhVien = new String[maSinhVien.length + 1];
         String[] themNgaySinh = new String[ngaySinh.length + 1];
@@ -63,10 +88,14 @@ public class quanLySinhVien {
         System.out.print("Điểm thi : ");
         themDiemThi[themDiemThi.length - 1] = sc.nextLine();
         System.out.printf("%23s%23s%23s%23s\n", "Họ tên", "Mã sinh viên", "Ngày sinh", "Điểm thi");
-        hienThiDanhSachSinhVien(themTen, themMaSinhVien, themNgaySinh, themDiemThi);
+        hoTen = themTen;
+        maSinhVien = themMaSinhVien;
+        ngaySinh = themNgaySinh;
+        diemThi = themDiemThi;
+        hienThiDanhSachSinhVien();
     }
 
-    static void chinhSuaThongTin(String hoTen[], String maSinhVien[], String ngaySinh[], String diemThi[]) {
+    static void chinhSuaThongTin() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Nhập mã sinh viên muốn sửa : ");
         String msv = sc.nextLine();
@@ -87,7 +116,7 @@ public class quanLySinhVien {
         diemThi[index] = sc.nextLine();
     }
 
-    static void xoaMotSinhVien(String hoTen[], String maSinhVien[], String ngaySinh[], String diemThi[]) {
+    static void xoaMotSinhVien() {
         String[] xoaTen = new String[hoTen.length - 1];
         String[] xoaMaSinhVien = new String[maSinhVien.length - 1];
         String[] xoaNgaySinh = new String[ngaySinh.length - 1];
@@ -119,15 +148,18 @@ public class quanLySinhVien {
         }
     }
 
-    static void timSinhVienCoDiemCaoNhat(String hoTen[], String maSinhVien[], String ngaySinh[], double diemThi[]) {
-        int max = (int) diemThi[0];
+    static void timSinhVienCoDiemCaoNhat() {
+        int max = Integer.parseInt(diemThi[0]);
         int i;
-        int index;
-        for ( i = 0; i < diemThi.length; i++) {
-            if (max < (int) diemThi[i]) {
-                max = (int) diemThi[i];
+        int index = 0;
+        for (i = 0; i < diemThi.length; i++) {
+            if (max < Integer.parseInt(diemThi[i])) {
+                max = Integer.parseInt(diemThi[i]);
                 index = i;
             }
         }
+        System.out.println("Sinh viên cao điểm nhất là : ");
+        System.out.printf("%23s%23s%23s%23s\n", "Họ tên", "Mã sinh viên", "Ngày sinh", "Điểm thi");
+        System.out.printf("%20s%20s%22s%24s\n", hoTen[index], maSinhVien[index], ngaySinh[index], diemThi[index]);
     }
 }
